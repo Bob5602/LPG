@@ -4,11 +4,14 @@
 
 
 if(!groupsSetup){
-	//Pick a name group
-	//Shuffle the list
-	var _nameGroup = false;
-	if(irandom(1) == 1){
-		var _t = ds_list_create();
+	//Determine if we need a name group
+	var _nameGroup = irandom(1);
+	
+	//Make my variable
+	var _t = ds_list_create();
+	
+	if(_nameGroup){
+		//Copy name groups
 		ds_list_copy(_t,obj_Master.nameGroups);
 		ds_list_shuffle(_t);
 		//Pick one
@@ -18,40 +21,44 @@ if(!groupsSetup){
 		//Add the group to the list
 		ds_list_add(obj_Master.groups,_ng);
 		_nameGroup = true;
-		ds_list_destroy(_t)
 	}
-	//Pick a stuff group
+	
+	
+	//Pick a stuff group(s)
+	
+	//Clear _t
+	
+	ds_list_clear(_t);
 	//Shuffle the list
-	var _t = ds_list_create();
-		ds_list_copy(_t,obj_Master.stuffGroups);
-		ds_list_shuffle(_t);
-	//ds_list_shuffle(obj_Master.stuffGroups);
-	//Pick one
-	var _sg = _t[|0];
-	//Add the keywords
-	_sg.AddKeywords();
-	//Add the group to the list
-	ds_list_add(obj_Master.groups,_sg);
-	//ds_list_destroy(_t)
+	ds_list_copy(_t,obj_Master.stuffGroups);
+	ds_list_shuffle(_t);
+	
+	//How many stuff groups we have to pick
+	//Start with 1 for sure
+	var _numToPick = 1;
+	//If no name group, 1 more.
 	if(!_nameGroup){
-		//var _t = ds_list_create();
-		//ds_list_copy(_t,obj_Master.stuffGroups);
-		//ds_list_shuffle(_t);
-		//ds_list_shuffle(obj_Master.stuffGroups);
-		//Pick one
-		var _sg = _t[|1];
-		//Add the keywords
+		_numToPick++;	
+	}
+	
+	//Here is the logic for if we have a medium puzzle or a hard puzzle
+	//We add 1 for medium (4 groups) or 2 for hard (5 groups)
+	
+	
+	//Iterate through this
+	for(var i = 0; i < _numToPick; i++){
+		var _sg = _t[| i];
 		_sg.AddKeywords();
-		//Add the group to the list
 		ds_list_add(obj_Master.groups,_sg);
 	}
-	ds_list_destroy(_t);
+	//Clear the variable
+	ds_list_clear(_t);
 	
-	//Pick a value group
-	//Shuffle the list
-	var _t = ds_list_create();
+	
+	//Pick a single value group
+	
 	ds_list_copy(_t,obj_Master.valueGroups);
-	//ds_list_shuffle(obj_Master.valueGroups);
+	
 	ds_list_shuffle(_t);
 	//Pick one
 	var _vg = _t[|0];
@@ -60,6 +67,7 @@ if(!groupsSetup){
 	//Add the group to the list
 	ds_list_add(obj_Master.groups,_vg);
 	
+	//Got to the end, we destroy it
 	ds_list_destroy(_t);
 	//Now we setup the grid for the obj_Master
 	obj_Master.puzzleGrid = CreatePuzzleGrid();
@@ -71,7 +79,7 @@ if(!groupsSetup){
 //First we generate a puzzle solution;
 
 if(!puzzleGenerated){
-	
+		
 	solution = GeneratePuzzleSolution();
 	puzzleGenerated = true;	
 	array_push(displayText,"Generating Puzzle Solution - Complete");
@@ -357,6 +365,8 @@ if(!cluesGenerated){
 		}
 		exit;
 		break;
+		
+		/*
 		case 4:
 		//This is gonna be a tough one, multi rules
 		
@@ -493,6 +503,227 @@ if(!cluesGenerated){
 		
 		exit;
 		break;
+		
+		*/
+		
+		case 4:
+		//This is gonna be a tough one, multi rules
+		
+		if(!subStepInProgress) {
+			//var _solution = obj_PuzzleMaker.solution;
+			array_push(displayText,"Generating Multi Clues...");
+            
+            
+			////_gA = [0,0,0,0,0];
+			////_gAGroup = FindGroup(solution[0][0]);
+			////_gB = [0,0,0,0,0];
+			////_gBGroup = FindGroup(solution[0][1]);
+			////_gC = [0,0,0,0,0];
+			////_gCGroup = FindGroup(solution[0][2]);
+            
+			////for(var i = 0; i < array_length(solution);i++){
+			////	_gA[i] = _gAGroup.getNum(solution[i][0]);	
+			////	_gB[i] = _gBGroup.getNum(solution[i][1]);
+			////	_gC[i] = _gCGroup.getNum(solution[i][2]);
+			////}
+	        
+            _lengthOfGroup = array_length(solution);
+            _numberOfGroups = 3;
+            _gNumber = array_create(_numberOfGroups);
+            _gGroups = array_create(_numberOfGroups);
+            for (var i=0; i<_numberOfGroups; i++) {
+                _gNumber[i] = array_create(_lengthOfGroup);
+                _gGroups[i] = FindGroup(solution[0][i]);
+            }
+            
+            for (var i=0; i<_numberOfGroups; i++) {
+                for (var j=0; j<_lengthOfGroup; j++) {
+                    _gNumber[i][j] = _gGroups[i].getNum(solution[j][i]);
+                }
+            }
+	
+            
+			////_names = [
+			////	_gAGroup.getName(0),_gAGroup.getName(1),_gAGroup.getName(2),_gAGroup.getName(3),_gAGroup.getName(4),
+			////	_gBGroup.getName(0),_gBGroup.getName(1),_gBGroup.getName(2),_gBGroup.getName(3),_gBGroup.getName(4),
+			////	_gCGroup.getName(0),_gCGroup.getName(1),_gCGroup.getName(2),_gCGroup.getName(3),_gCGroup.getName(4),
+			////]
+            
+            _names = array_create(_numberOfGroups * _lengthOfGroup);
+            for (var i=0; i<_numberOfGroups; i++) {
+                for (var j=0; j<_lengthOfGroup; j++) {
+                    _names[5*i+j] = _gGroups[i].getName(j);
+                }
+            }
+	
+			////_truth = [
+			////		0,
+			////		0,
+			////		0,
+			////		0,
+			////		0
+			////		];
+	
+			////for (var n=0; n<5; n++) {
+			////	_truth[n] = 0;
+			////	_truth[n] |= (1 << _gC[n]) << 10;
+			////	_truth[n] |= (1 << _gB[n]) << 5;
+			////	_truth[n] |= (1 << _gA[n]);	
+			////}
+            
+            _truth = array_create(_lengthOfGroup);
+            for (var n=0; n<_lengthOfGroup; n++) {
+                _truth[n] = 0;
+                for (var i=0; i<_numberOfGroups; i++) {
+                    _truth[n] |= (1 << _gNumber[i][n]) << (_lengthOfGroup * i);
+                }
+            }
+            
+            
+			_tempList = ds_list_create();
+
+			////_n = bin_to_dec("00000_00000_11111");
+			////_stop = bin_to_dec("1_00000_00000_00000"); // overflow
+			
+            _start = (1 << _lengthOfGroup) - 1;
+            _stop = 1 << (_lengthOfGroup * _numberOfGroups); // overflow
+            _n = _start;
+            
+			//Setup our stuff
+			subStepInProgress = true;
+			debugText = "Generating all Multi Clues";
+		}
+		
+		//// Permute every posible 15-bit number with five bits set
+		// Permute every possible N-bit number with _lengthOfGroup bits set
+		// where N = _numberOfGroups * _lengthOfGroup
+		
+		while (_n < _stop && _TimeTaken <= 5) {
+            
+            
+			////// Validate there are bits set within each of the three groups
+			////if (bitcount(_n & 31744) > 0) { // 0b11111_00000_00000
+			////	if (bitcount(_n & 992) > 0) { // 0b00000_11111_00000
+			////		if (bitcount(_n & 31) > 0) { // 0b00000_00000_11111
+			////			// Compare clue to each true statement and reject it
+			////			// if two (or more) correlated factors are present
+			////			var ok = true;
+			////			for (var i=0; i<array_length(_truth); i++) {
+			////				if (bitcount(_n & _truth[i]) > 1) {
+			////					ok = false;
+			////				}
+			////			}
+			////			if (ok) {
+			////				ds_list_add(_tempList, _n);
+			////			}
+			////		}
+			////	}
+			////}
+            
+            // Validate there are bits set within each of the groups
+            var _count = 0;
+            for (var i=0; i<_numberOfGroups; i++) {
+                if (bitcount(_n & (_start << (_lengthOfGroup * i)))) {
+                    _count++;
+                }
+            }
+            if (_count == _numberOfGroups) {
+    			// Compare clue to each true statement and reject it
+    			// if two (or more) correlated factors are present
+    			var ok = true;
+    			for (var i=0; i<array_length(_truth); i++) {
+    				if (bitcount(_n & _truth[i]) > 1) {
+    					ok = false;
+    				}
+    			}
+    			if (ok) {
+    				ds_list_add(_tempList, _n);
+				}
+            }
+            
+            
+            
+			_n = next(_n);
+			_TimeTaken = current_time - _T;
+		}
+		if(_n < _stop){
+			_iterationCount++;
+			//show_debug_message("Huzzah!");
+			exit;
+		}
+		
+		
+		while(_i < ds_list_size(_tempList) && _TimeTaken <= 5){
+		//for(var i = 0; i < ds_list_size(_test); i++){
+			//show_debug_message(string(_test[| i]));	
+			//Somehow convert this to names?
+			//for (var i=0; i<array_length(truth); i++) {
+			
+			var _entityList = ds_list_create();
+			var n = _tempList[| _i];
+			var j = 0;
+			while (n > 0) {
+				if (n & 1) {
+					ds_list_add(_entityList,_names[j]);
+				}
+				n = n >> 1;
+				j++;
+			}
+			//show_debug_message(msg);
+			
+			//Shuffle the lsit
+			ds_list_shuffle(_entityList);
+			
+            
+            
+			//////Make my string
+			////var _string = "five are " + _entityList[| 0] + " "+ _entityList[| 1] + " "+ _entityList[| 2] + " "+ _entityList[| 3] + " "+ _entityList[| 4];
+
+            //Make my string
+            var _entityLength = ds_list_size(_entityList);
+            var _numberNames = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine"];
+            var _string = _numberNames[_entityLength];
+            _string += " are ";
+            for (var i=0; i<_entityLength; i++) {
+                if (i > 0) _string += " ";
+                _string += _entityList[| i];
+            }
+            
+            
+            
+			//Parse it
+			var _parsed = ParseRuleText(_string);
+			//Generate the rule
+			var _rule = new Rule(_parsed);
+			//Add it to the list
+			//ds_list_add(obj_Master.rules,_rule);
+			ds_list_add(allClues,_rule);
+			//Destroy this list
+			ds_list_destroy(_entityList);
+			//}
+		_i++;
+		_TimeTaken = current_time - _T;
+		}
+		
+		if(_i >= ds_list_size(_tempList)){
+			//show_debug_message("Completed Multi Clue gen in " + string(_iterationCount+1) + " iterations");
+			displayText[array_length(displayText)-1] = "Generating Multi Clues - Complete";
+			subStep += 1;
+			subStepInProgress = false;
+			ds_list_destroy(_tempList);
+			//show_debug_message(string(_TimeTaken));
+		}else{
+			_iterationCount++;
+			//show_debug_message(string(_TimeTaken));
+		}
+		
+		//GenerateMultiRuleAlt(allClues);
+		
+		exit;
+		break;
+
+		
+		
 		case 5:
 			//This is the one that creates pairs
 			//Pairs area done in this formati:

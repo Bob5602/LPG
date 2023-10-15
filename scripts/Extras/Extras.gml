@@ -235,3 +235,15 @@ function Clear_Errors(){
 		}
 	}
 }
+
+
+function ds_list_to_array(_list){
+	var _s = ds_list_size(_list);
+	var _array = array_create(_s);
+	for(var i = 0; i < _s; i++){
+		_array[i] = _list[| i];	
+	}
+	return _array;
+}
+	
+	

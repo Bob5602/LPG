@@ -1051,6 +1051,9 @@ function GeneratePuzzleSolution(){
 	//where X = number of Groups
 	
 	//And stored in an array?
+	
+	
+	/*
 	var _solutions = [];
 	var _numList = ds_list_create()
 	var _numList2 = ds_list_create();
@@ -1080,6 +1083,42 @@ function GeneratePuzzleSolution(){
 	CheckOtherMatches();
 	ds_list_destroy(_numList);
 	ds_list_destroy(_numList2);
+	
+	*/
+	
+	var _solutions = [];
+	//Just 1 list, of all the values;
+	var _numList = ds_list_create();
+	ds_list_add(_numList,0,1,2,3,4); 
+	
+	var _aGroups = [];
+	for(var i = 0; i < ds_list_size(obj_Master.groups); i++){
+		ds_list_shuffle(_numList);
+		var _randVals = ds_list_to_array(_numList);
+		var _gArray = array_create(2);
+		//array_push(_aGroups,obj_Master.groups[| i]);
+		_gArray[0] = obj_Master.groups[| i];
+		_gArray[1] = _randVals;
+		array_push(_aGroups,_gArray);
+	}
+	
+	
+	for(var j = 0; j < 5; j++){
+		var _aName = _aGroups[0][0].getName(j);	
+		var _sol = array_create(1);
+		_sol[0] = _aName;
+		
+		for(var k = 1; k < array_length(_aGroups); k++){
+			var _nName = _aGroups[k][0].getName(_aGroups[k][1][j]);	
+			MarkTrue(_aName,_nName);
+			array_push(_sol,_nName);
+		}
+		
+		array_push(_solutions,_sol);
+	}
+	CheckOtherMatches();
+	
+	ds_list_destroy(_numList);
 	//show_debug_message(_solutions);
 	//obj_Master.curSolve = _solutions;
 	

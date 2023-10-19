@@ -9,7 +9,7 @@ if(obj_Master.playerReady){
 	puzzlesTested += 1;
 	show_debug_message("Puzzles Tested: " + string(puzzlesTested));
 }else{
-	if(attemptcount > 30){
+	if(attemptcount > 300){
 		show_message("Puzzle Failed! # " + obj_Master.puzzleNum);
 		instance_destroy();
 	}

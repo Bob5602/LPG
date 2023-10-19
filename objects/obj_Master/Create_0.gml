@@ -8,6 +8,7 @@ keywords = ds_list_create();
 subGroups = ds_list_create();
 groups = ds_list_create();
 rules = ds_list_create();
+KeywordsToGroups = ds_map_create();
 solution = -4;
 truthGrid = -4;
 
@@ -137,6 +138,7 @@ function CleanUp(_solved = false){
 	ClearSubGroups();
 	//Clear regular groups i guess
 	ds_list_clear(groups);
+	ds_map_clear(KeywordsToGroups);
 	
 	playerReady = false;
 	inProgress = false;

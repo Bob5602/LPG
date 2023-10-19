@@ -124,7 +124,12 @@ if(!cluesGenerated){
 			//Go through all the positive relations
 			for(var j = 0; j < ds_list_size(_posRel); j++){
 				//Get the positive relation name
+				
 				var _relativeName = _posRel[| j];
+				var _pos = ds_list_find_index(obj_Master.keywords,_relativeName);
+				if(_pos < _i){
+					continue;	
+				}
 				//Generate the striing
 				var _string = _kw + " is " + _relativeName;
 				//Parse it
@@ -134,7 +139,8 @@ if(!cluesGenerated){
 				//Add it to the list
 			
 				//ds_list_add(obj_Master.rules,_rule);
-				ds_list_add(allClues,_rule);
+				//ds_list_add(allClues,_rule);
+				AddRuleSafe(allClues,_rule);
 			}
 			//Finished with this KW, destroy the list
 			ds_list_destroy(_posRel);
@@ -146,6 +152,7 @@ if(!cluesGenerated){
 			displayText[array_length(displayText)-1] = "Generating True Clues - Complete";
 			subStep += 1;
 			subStepInProgress = false;
+			TempToReal();
 			//show_debug_message(string(_TimeTaken));
 		}else{
 			_iterationCount++;
@@ -182,6 +189,10 @@ if(!cluesGenerated){
 				//Get the negative relation name
 				var _relativeName = _negRel[| j];
 				//Generate the striing
+				var _pos = ds_list_find_index(obj_Master.keywords,_relativeName);
+				if(_pos < _i){
+					continue;	
+				}
 				var _string = _kw + " not " + _relativeName;
 				//Parse it
 				var _parsed = ParseRuleText(_string)
@@ -189,7 +200,8 @@ if(!cluesGenerated){
 				var _rule = new Rule(_parsed);
 				//Add it to the list
 				//ds_list_add(obj_Master.rules,_rule);
-				ds_list_add(allClues,_rule);
+				//ds_list_add(allClues,_rule);
+				AddRuleSafe(allClues,_rule);
 			}
 			//Finished with this KW, destroy the list
 			ds_list_destroy(_negRel);
@@ -202,6 +214,7 @@ if(!cluesGenerated){
 			subStep += 1;
 			subStepInProgress = false;
 			//show_debug_message(string(_TimeTaken));
+			TempToReal();
 		}else{
 			_iterationCount++;
 			//show_debug_message(string(_TimeTaken));
@@ -259,7 +272,13 @@ if(!cluesGenerated){
 					var _rule = new Rule(_parsed);
 					//Add it to the list
 					//ds_list_add(obj_Master.rules,_rule);
-					ds_list_add(allClues,_rule);
+					
+					
+					
+					//ds_list_add(allClues,_rule);
+					AddRuleSafe(allClues,_rule);
+					
+					
 					//Destroy this list
 					ds_list_destroy(_boo);
 				}
@@ -277,6 +296,8 @@ if(!cluesGenerated){
 			displayText[array_length(displayText)-1] = "Generating Either / Or Clues - Complete";
 			subStep += 1;
 			subStepInProgress = false;
+			
+			TempToReal();
 			//show_debug_message(string(_TimeTaken));
 		}else{
 			_iterationCount++;
@@ -339,7 +360,11 @@ if(!cluesGenerated){
 					var _rule = new Rule(_parsed);
 					//Add it to the list
 					//ds_list_add(obj_Master.rules,_rule);
-					ds_list_add(allClues,_rule);
+					
+					//ds_list_add(allClues,_rule);
+					AddRuleSafe(allClues,_rule);
+					
+					
 					//Destroy this list
 					ds_list_destroy(_boo);
 				}
@@ -358,6 +383,8 @@ if(!cluesGenerated){
 			displayText[array_length(displayText)-1] = "Generating Neither / Nor Clues - Complete";
 			subStep += 1;
 			subStepInProgress = false;
+			
+			TempToReal();
 			//show_debug_message(string(_TimeTaken));
 		}else{
 			_iterationCount++;
@@ -528,7 +555,7 @@ if(!cluesGenerated){
 			////}
 	        
             _lengthOfGroup = array_length(solution);
-            _numberOfGroups = 3;
+            _numberOfGroups = min(5,array_length(solution[0]));
             _gNumber = array_create(_numberOfGroups);
             _gGroups = array_create(_numberOfGroups);
             for (var i=0; i<_numberOfGroups; i++) {
@@ -697,7 +724,9 @@ if(!cluesGenerated){
 			var _rule = new Rule(_parsed);
 			//Add it to the list
 			//ds_list_add(obj_Master.rules,_rule);
+			
 			ds_list_add(allClues,_rule);
+			
 			//Destroy this list
 			ds_list_destroy(_entityList);
 			//}
@@ -711,6 +740,7 @@ if(!cluesGenerated){
 			subStep += 1;
 			subStepInProgress = false;
 			ds_list_destroy(_tempList);
+			TempToReal();
 			//show_debug_message(string(_TimeTaken));
 		}else{
 			_iterationCount++;
@@ -819,7 +849,10 @@ if(!cluesGenerated){
 							var _rule = new Rule(_parsed);
 							//Add it to the list
 							//ds_list_add(obj_Master.rules,_rule);
-							ds_list_add(allClues,_rule);
+							
+							//ds_list_add(allClues,_rule);
+							AddRuleSafe(allClues,_rule);
+							
 							//Destroy this list
 							ds_list_destroy(_left);
 							ds_list_destroy(_right);
@@ -839,6 +872,9 @@ if(!cluesGenerated){
 			displayText[array_length(displayText)-1] = "Generating Pair Clues - Complete";
 			subStep += 1;
 			subStepInProgress = false;
+			
+			TempToReal();
+			
 			//show_debug_message(string(_TimeTaken));
 		}else{
 			_iterationCount++;
@@ -973,6 +1009,8 @@ if(!cluesGenerated){
 			displayText[array_length(displayText)-1] = "Generating Value Clues - Complete";
 			subStep += 1;
 			subStepInProgress = false;
+			
+			TempToReal();
 			//show_debug_message(string(_TimeTaken));
 		}else{
 			_iterationCount++;
@@ -988,12 +1026,17 @@ if(!cluesGenerated){
 			array_push(displayText,"Cleaning up Clues...");
 		}
 		//Go through all the keywords
+		
+		/*
 		while(_i < ds_list_size(allClues) && _TimeTaken <= 10){
 			AddRuleSafe(allCluesClean,allClues[| _i]);
 			_i++;
 			_TimeTaken = current_time - _T;
 			
 		}
+		
+		*/
+		
 		if(_i >= ds_list_size(allClues)){
 			//show_debug_message("Completed Clue clean up in " + string(_iterationCount+1) + " iterations");
 			displayText[array_length(displayText)-1] = "Cleaning up Clues - Complete";
@@ -1029,7 +1072,9 @@ if(!rulesGenerated){
 	//show_debug_message("Clearing all rules took " + string(_TimeTaken) + "ms");
 	subStep++;
 	array_push(displayText,"Determining Initial Clues...");
-	//show_message("All clean clues are: " + string(ds_list_size(allCluesClean)));
+	show_debug_message("All generated clues are: " + string(ds_list_size(allClues)));
+	show_debug_message("All clean clues are: " + string(ds_list_size(allCluesClean)));
+	
 	//show_message("Solution is " + string(solution));
 	exit;
 	break;
@@ -1105,7 +1150,7 @@ if(!rulesGenerated){
 	}until (_added = true);
 	//show_message("exiting add-rule do");
 	subStep++;
-	//show_message(string(ds_list_size(obj_Master.rules)));
+	//show_debug_message("Total rules: " + string(ds_list_size(obj_Master.rules)));
 	exit;
 	break;
 	case 2:
@@ -1345,8 +1390,8 @@ if(!cleanupComplete){
 		array_push(displayText,"Cleaning up all generated clues...");
 	}
 	
-	while(_i < ds_list_size(allClues) && _TimeTaken < 10){
-		var _rtd = allClues[| _i];
+	while(_i < ds_list_size(allCluesClean) && _TimeTaken < 10){
+		var _rtd = allCluesClean[| _i];
 		if(ds_list_find_index(obj_Master.rules,_rtd) == -1){
 			//show_debug_message("Not in official rules, can clean it up");
 			_rtd.Destroy();
@@ -1354,7 +1399,7 @@ if(!cleanupComplete){
 		_i++;
 		_TimeTaken = current_time - _T;
 	}
-	if(_i >= ds_list_size(allClues)){
+	if(_i >= ds_list_size(allCluesClean)){
 		displayText[array_length(displayText)-1] = "Cleaning up all generated clues - Complete";
 		subStep++;
 		//show_debug_message("Took itrations : " + string(_iterationCount));
@@ -1367,6 +1412,9 @@ if(!cleanupComplete){
 	break;
 	
 	case 1:
+	for(var i = 0; i < ds_list_size(obj_Master.rules); i++){
+		obj_Master.rules[| i].GeneratePrettyText();	
+	}
 	ds_list_destroy(allClues);
 	ds_list_destroy(allCluesClean);
 	cleanupComplete = true;
@@ -1388,5 +1436,8 @@ if(!obj_Master.playerReady){
 	obj_Master._timing = current_time;
 	//Clear the grid
 	ClearAll();
+	var _time = current_time - startTime;
+	
+	show_debug_message("Generation time : " + obj_Master.ms_convert(_time));
 	instance_destroy();
 }

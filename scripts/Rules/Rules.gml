@@ -342,6 +342,7 @@ function GetRuleKeywords(_wordList){
 			ds_list_add(_kWords,_word);
 		}
 	}
+	ds_list_sort(_kWords,1);
 	return _kWords;
 }
 
@@ -353,20 +354,25 @@ function AddRuleSafe(_list,_rule){
 		return;
 	}
 	//If its a before/after rule, just add it.  No dupes in multi rules.
-	if(_rule.ruleType == "before" || _rule.ruleType == "after"){
+	/*
+	if(_rule.ruleType == "before" || _rule.ruleType == "after" || _rule.ruleType == "multi"){
 		ds_list_add(_list,_rule);
 		return;
 	}
-	
+	*/
+	var _nRule = _rule.ruleKWWritten;
 	//Now we go through all the existing rules to check for dupes.
 	for(var i = 0; i < ds_list_size(_list); i++){
 		//Get the existing rule we're checking against
 		var _eRule = _list[| i];
 		
 		//If its not the same rule type
+		/*
 		if(_eRule.ruleType != _rule.ruleType){
-			continue;	
+			continue;
 		}
+		*/
+		
 		
 		//Should check number of elements, but, I don't think this matters.
 		
@@ -374,32 +380,37 @@ function AddRuleSafe(_list,_rule){
 		//We're gonna assume its not new
 		var _isNew = false;
 		
+		if(_nRule != _eRule.ruleKWWritten){
+			_isNew = true;
+			continue;
+		}
+		
+		/*
 		//Check the keywords
 		for(var n = 0; n < ds_list_size(_rule.ruleKeywords); n++){
 			//Get the new keyword
-			var _nKeyword = _rule.ruleKeywords[| n];
-				
-			//Check if its there or not
-			if(ds_list_find_index(_eRule.ruleKeywords,_nKeyword) == -1){
-				//It's not there, so this must be a new rule
+			//var _nKeyword = _rule.ruleKeywords[| n];
+			if(_rule.ruleKeywords[| n] != _eRule.ruleKeywords[| n]){
 				_isNew = true;
-				//We break out of this loop cause its new.
+				if(!_stringCompare){
+					show_debug_message("The same but string compare didn't think so");
+				}
 				break;
 			}
 		}
+		*/
+		
+		
+		
 		//NOW if we made it here, if _isNew is FALSE we know its a dupe.
 		//We actually can't know its new until all the loops have gone
 		if(!_isNew){
-			
-			//Debug stuff of course
-			//show_debug_message("Dupe, old: " + _eRule.ToString());
-			//show_debug_message("and new: " + _rule.ToString());
-			
-			
+					
 			//We're gonna have some fun
 			//If its a duplicate, we're gonna either destroy the new rule, or, destroy the old rule
 			//And replace it.
-			if(irandom(1) = 1){
+			
+			if(irandom(1) == 1){
 				ds_list_replace(_list,i,_rule);
 				_eRule.Destroy();
 				return;
@@ -407,6 +418,7 @@ function AddRuleSafe(_list,_rule){
 				_rule.Destroy();
 				return;
 			}
+			
 		}
 	}
 	//There is no rules of this type already, so it must be new
@@ -421,6 +433,7 @@ function Rule(_list) constructor{
 	ruleText = _list; //ds_list
 	ruleType = DetermineRuleType(ruleText);
 	ruleKeywords = GetRuleKeywords(_list); //ds_list
+	ruleKWWritten = ds_list_write(ruleKeywords);
 	
 	if(ruleType == "before" || ruleType == "after"){
 		for(var i = 0; i < ds_list_size(ruleText); i++){
@@ -438,8 +451,11 @@ function Rule(_list) constructor{
 			}
 		}
 	}
-	rulePrettyText = GeneratePrettyRuleText(self);
+	//rulePrettyText = GeneratePrettyRuleText(self);
 	
+	static GeneratePrettyText = function(){
+		rulePrettyText = GeneratePrettyRuleText(self);	
+	}
 	static ToString = function(){
 		var _str = "";
 		for(var i = 0; i < ds_list_size(ruleText); i++){

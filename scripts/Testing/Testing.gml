@@ -17,7 +17,12 @@ function Group(_name,_1,_2,_3,_4,_5,_value = false,_amtType = "",_preText = "", 
 	
 	
 	static AddKeywords = function(){
-		ds_list_add(obj_Master.keywords, a,b,c,d,e);	
+		ds_list_add(obj_Master.keywords, a,b,c,d,e);
+		ds_map_add(obj_Master.KeywordsToGroups,a,self);
+		ds_map_add(obj_Master.KeywordsToGroups,b,self);
+		ds_map_add(obj_Master.KeywordsToGroups,c,self);
+		ds_map_add(obj_Master.KeywordsToGroups,d,self);
+		ds_map_add(obj_Master.KeywordsToGroups,e,self);
 	}
 	
 	static getNum = function(_name){
@@ -140,7 +145,7 @@ function SubGroup(_a,_b) constructor{
 			var _y = ySide.getNum(_a);		
 		}
 
-		grid[# _x,_y] = 1;	
+		grid[# _x,_y] = 1;
 	}
 	
 	static SetClear = function(_a,_b){
@@ -757,13 +762,28 @@ function TransposeNegatives(_name){
 //Pass in the name of a thing, get the group its part of
 function FindGroup(_name){
 	
+	var _a = obj_Master.KeywordsToGroups[? _name];
+	if(_a == undefined){
+		return -4;	
+	}else{
+		return _a;	
+	}
+	/*
 	var _ml = obj_Master.groups;
 	for(var i = 0; i < ds_list_size(_ml); i++){
 		if(_ml[| i].getNum(_name) != -4){
-			return _ml[| i];	
+			var _b = obj_Master.KeywordsToGroups[? _name];
+			if(_b != _ml[| i]){
+				show_message("Not the same group!");	
+			}else{
+				show_debug_message("Groups are the same for " + _name);	
+			}
+			return _ml[| i];
 		}
 	}
+	ds_map_find_value()
 	return -4;
+	*/
 }
 
 
@@ -779,8 +799,21 @@ function GetSubGroups(_group){
 }
 
 function GetIntersectingGroups(_nameA,_nameB){
-	var _aGroups = GetSubGroups(FindGroup(_nameA));
-	var _bGroups = GetSubGroups(FindGroup(_nameB));
+	var _a = ds_list_find_index(obj_Master.groups,_nameA);
+	var _b = ds_list_find_index(obj_Master.groups,_nameB);
+	var _tot = ds_list_size(obj_Master.groups);
+	
+	var _ret = obj_Master.puzzleGrid[# _a,_tot-_b-1];
+	if(_ret == 0){
+		_ret = obj_Master.puzzleGrid[# _b,_tot-_a-1];	
+	}
+	return _ret;
+
+}
+/*
+function GetIntersectingGroups(_nameA,_nameB){
+	var _aGroups = GetSubGroups(_nameA);
+	var _bGroups = GetSubGroups(_nameB);
 	var _comboGroup;
 	
 	//Go through all of A's subgroups
@@ -788,19 +821,29 @@ function GetIntersectingGroups(_nameA,_nameB){
 		//If it exists in B's subgroups
 		if(ds_list_find_index(_bGroups,_aGroups[| i]) != -1){
 			_comboGroup = _aGroups[| i];
+			break;
 		}
 	}
 	
 	//Get rid of extra lists
 	ds_list_destroy(_aGroups);
 	ds_list_destroy(_bGroups);
-	
+	var _test = GetIntersectingGroupsAlt(_nameA,_nameB);
+	if(_comboGroup == _test){
+		//show_message("The same combo group!");	
+	}else{
+		show_message("Wrong combo group");	
+	}
 	//Return
 	return _comboGroup;
 }
+*/
 
 function MarkTrue(_aName,_bName){
-	if(FindGroup(_aName) == FindGroup(_bName)){
+	
+	var _aGroup = FindGroup(_aName);
+	var _bGroup = FindGroup(_bName);
+	if(_aGroup == _bGroup){
 		//show_message("Same Group, skipping");	
 		return;
 	}
@@ -812,7 +855,7 @@ function MarkTrue(_aName,_bName){
 		TransposePositives(_bName);
 		return;
 	}
-	var _tests = GetIntersectingGroups(_aName,_bName);
+	var _tests = GetIntersectingGroups(_aGroup,_bGroup);
 	
 	_tests.SetTrue(_aName,_bName);
 	
@@ -823,7 +866,9 @@ function MarkTrue(_aName,_bName){
 }
 
 function MarkFalse(_aName,_bName){
-	if(FindGroup(_aName) == FindGroup(_bName)){
+	var _aGroup = FindGroup(_aName);
+	var _bGroup = FindGroup(_bName);
+	if(_aGroup == _bGroup){
 		//show_message("Same Group, skipping");	
 		return;
 	}
@@ -831,25 +876,37 @@ function MarkFalse(_aName,_bName){
 		return;	
 	}
 	
-	var _tests = GetIntersectingGroups(_aName,_bName);
+	var _tests = GetIntersectingGroups(_aGroup,_bGroup);
 	
 	_tests.SetFalse(_aName,_bName);	
 }
 
 function MarkEitherOr(_aName,_bName,_cName){
-	var _tests = GetIntersectingGroups(_aName,_bName);
+	var _aGroup = FindGroup(_aName);
+	var _bGroup = FindGroup(_bName);
+	
+	var _tests = GetIntersectingGroups(_aGroup,_bGroup);
 	
 	_tests.SetEitherOr(_aName,_bName,_cName);
 }
 
 function GetState(_aName,_bName){
-	if(FindGroup(_aName) == FindGroup(_bName)){
+	var _aGroup = FindGroup(_aName);
+	var _bGroup = FindGroup(_bName);
+	if(_aGroup == _bGroup){
 		//show_message("Same Group, skipping");	
 		return -4;
 	}
-
 	
-	var _g = GetIntersectingGroups(_aName,_bName);
+	/*
+	var _a = ds_list_find_index(obj_Master.keywords,_aName);
+	var _b = ds_list_find_index(obj_Master.keywords,_bName);
+	
+	var _result = obj_Master.truthGrid[# _a,_b];
+	*/
+	
+	
+	var _g = GetIntersectingGroups(_aGroup,_bGroup);
 	var _x, _y;
 	if(_g.xSide.contains(_aName)){
 		_x = _g.xSide.getNum(_aName);
@@ -861,6 +918,7 @@ function GetState(_aName,_bName){
 	
 	var _result = _g.grid[# _x,_y];
 	//show_message(_aName + " / " + _bName + " = " + string(_result));
+	
 	return _result;
 }
 
@@ -876,7 +934,9 @@ function CheckOtherMatches(){
 }
 
 function MarkClear(_aName,_bName){
-	if(FindGroup(_aName) == FindGroup(_bName)){
+	var _aGroup = FindGroup(_aName);
+	var _bGroup = FindGroup(_bName);
+	if(_aGroup == _bGroup){
 		//show_message("Same Group, skipping");	
 		return;
 	}
@@ -884,13 +944,15 @@ function MarkClear(_aName,_bName){
 		return;	
 	}
 	
-	var _tests = GetIntersectingGroups(_aName,_bName);
+	var _tests = GetIntersectingGroups(_aGroup,_bGroup);
 	
 	_tests.SetClear(_aName,_bName);	
 }
 
 function MarkClearSingle(_aName,_bName){
-	if(FindGroup(_aName) == FindGroup(_bName)){
+	var _aGroup = FindGroup(_aName);
+	var _bGroup = FindGroup(_bName);
+	if(_aGroup == _bGroup){
 		//show_message("Same Group, skipping");	
 		return;
 	}
@@ -898,18 +960,20 @@ function MarkClearSingle(_aName,_bName){
 		return;	
 	}
 	
-	var _tests = GetIntersectingGroups(_aName,_bName);
+	var _tests = GetIntersectingGroups(_aGroup,_bGroup);
 	
 	_tests.SetClearSingle(_aName,_bName);	
 }
 
 function MarkValue(_aName,_bName,_val){
-	if(FindGroup(_aName) == FindGroup(_bName)){
+	var _aGroup = FindGroup(_aName);
+	var _bGroup = FindGroup(_bName);
+	if(_aGroup == _bGroup){
 		//show_message("Same Group, skipping");	
 		return;
 	}
 	
-	var _tests = GetIntersectingGroups(_aName,_bName);
+	var _tests = GetIntersectingGroups(_aGroup,_bGroup);
 	
 	_tests.SetDirectValue(_aName,_bName,_val);	
 }

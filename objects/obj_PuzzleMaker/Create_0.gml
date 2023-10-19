@@ -43,3 +43,12 @@ _n = 0;
 _iterationCount = 0;
 
 show_debug_message("Starting puzzle " + obj_Master.puzzleNum);
+
+startTime = current_time;
+
+function TempToReal(){
+	for(var i = 0; i < ds_list_size(allClues); i++){
+		ds_list_add(allCluesClean,allClues[| i]);	
+	}
+	ds_list_clear(allClues);
+}

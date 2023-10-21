@@ -7,5 +7,5 @@ if(_solved){
 	obj_Master.CleanUp(true);	
 }else{
 	obj_Master.notSolved = true;
-	
+	obj_Master.errorCount = GetErrorCount();
 }

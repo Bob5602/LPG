@@ -228,6 +228,9 @@ function Clear_Errors(){
 			var _i = obj_Master.keywords[| i];
 			var _j = obj_Master.keywords[| j];
 			var _curResult = GetState(_i,_j);
+			if(_curResult == 0 || _curResult == 3){
+				continue;	
+			}
 			var _ii = i;
 			var _ij = j;
 			var _trueState = obj_Master.truthGrid[# _ii,_ij];
@@ -249,4 +252,24 @@ function ds_list_to_array(_list){
 	return _array;
 }
 	
-	
+function GetErrorCount(){
+	var _errorCount = 0;
+	for(var i = 0; i < ds_list_size(obj_Master.keywords); i++){
+		for(var j = i+1; j < ds_list_size(obj_Master.keywords); j++){
+			var _i = obj_Master.keywords[| i];
+			var _j = obj_Master.keywords[| j];
+			var _curResult = GetState(_i,_j);
+			if(_curResult == 0 || _curResult == 3){
+				continue;	
+			}
+			var _ii = i;
+			var _ij = j;
+			var _trueState = obj_Master.truthGrid[# _ii,_ij];
+			
+			if(_curResult != _trueState){
+				_errorCount += 1;
+			}
+		}
+	}
+	return _errorCount;
+}

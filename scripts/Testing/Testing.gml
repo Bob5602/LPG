@@ -986,6 +986,7 @@ function ClearAll(){
 }
 
 function CycleCell(_aName,_bName){
+	obj_Master.notSolved = false;
 	if(GetState(_aName,_bName) == 0){
 		MarkValue(_aName,_bName,1)
 		return;

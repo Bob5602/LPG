@@ -1140,7 +1140,7 @@ if(!rulesGenerated){
 			if(_testRule.ruleType == _desType && ds_list_find_index(_testRule.ruleKeywords,_desKeyword) != -1 && ds_list_find_index(_testRule.ruleKeywords,_desNotKeyword) == -1){
 				//AddRuleSafe(rules,_testRule);
 				ds_list_add(obj_Master.rules,_testRule);
-				show_debug_message("Type of "+ _desType + " and desired keyword was " + _desKeyword + " and avoiding " + _desNotKeyword + " So we added " + _testRule.ToString());
+				//show_debug_message("Type of "+ _desType + " and desired keyword was " + _desKeyword + " and avoiding " + _desNotKeyword + " So we added " + _testRule.ToString());
 				_added = true;
 				
 				//if(_testRule.ruleType == "true" || _testRule.ruleType == "false" || _testRule.ruleType == "multi" || _testRule.ruleType == "neither" || _testRule.ruleType == "either" || _testRule.ruleType == "pair"){

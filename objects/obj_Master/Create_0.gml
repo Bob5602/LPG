@@ -11,6 +11,7 @@ rules = ds_list_create();
 KeywordsToGroups = ds_map_create();
 solution = -4;
 truthGrid = -4;
+errorCount = 0;
 
 
 gridStartX = 100;

@@ -92,14 +92,14 @@ if(playerReady){
 	draw_set_valign(fa_top);
 	draw_set_color(c_white);
 	draw_set_font(font_standard);
-	draw_text(room_width-600,25,difficulty + " puzzle #" + puzzleNum);
-	draw_text(room_width-600,50,"Clues:");
-	draw_text(room_width-600,75,"Time Taken: " + ms_convert(current_time - _timing));
+	draw_text(room_width-500,25,difficulty + " puzzle #" + puzzleNum);
+	draw_text(room_width-500,50,"Time Taken: " + ms_convert(current_time - _timing));
+	draw_text(room_width-500,75,"Clues:");
 	
 	draw_text_ext(room_width-600,100,_aStr,20,600);
 	
 	if(notSolved){
-		draw_text(room_width - sprite_get_width(spr_clearGrid)-10 - sprite_get_width(spr_ClearErrors),room_height-sprite_get_height(spr_abandon_puzzle)-35 - sprite_get_height(spr_check_solution) - sprite_get_height(spr_clearGrid),"This is not the correct solution.");
+		draw_text(room_width - sprite_get_width(spr_clearGrid)-10 - sprite_get_width(spr_ClearErrors),room_height-sprite_get_height(spr_abandon_puzzle)-35 - sprite_get_height(spr_check_solution) - sprite_get_height(spr_clearGrid),"You have " + string(errorCount) + " error(s).");
 	}
 }
 /*

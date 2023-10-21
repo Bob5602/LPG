@@ -24,13 +24,13 @@ if(!playerReady && puzzleGrid == -4){
 	draw_set_halign(fa_middle);
 	draw_set_valign(fa_top);
 	draw_set_font(font_standard);
-	draw_text(room_width/2,550,"Puzzle # (Click to enter a specific puzzle)");
+	draw_text(room_width/2,700,"Puzzle # (Click to enter a specific puzzle)");
 	var _sh = string_height(puzzleNum);
 	_sh = max(string_height("0"),_sh);
 	var _sw = string_width(puzzleNum);
 	_sw = max(string_width("0"),_sw);
-	draw_rectangle(room_width/2-_sw/2,575,room_width/2+_sw/2,575+_sh,1);
-	draw_text(room_width/2,575,puzzleNum);
+	draw_rectangle(room_width/2-_sw/2,725,room_width/2+_sw/2,725+_sh,1);
+	draw_text(room_width/2,725,puzzleNum);
 }
 
 //Only draw if there is actually a puzzle grid.
@@ -92,14 +92,14 @@ if(playerReady){
 	draw_set_valign(fa_top);
 	draw_set_color(c_white);
 	draw_set_font(font_standard);
-	draw_text(room_width-800,25,"Puzzle #" + puzzleNum);
-	draw_text(room_width-800,50,"Clues:");
-	draw_text(room_width-800,75,"Time Taken: " + ms_convert(current_time - _timing));
+	draw_text(room_width-600,25,difficulty + " puzzle #" + puzzleNum);
+	draw_text(room_width-600,50,"Clues:");
+	draw_text(room_width-600,75,"Time Taken: " + ms_convert(current_time - _timing));
 	
-	draw_text_ext(room_width-800,100,_aStr,20,750);
+	draw_text_ext(room_width-600,100,_aStr,20,600);
 	
 	if(notSolved){
-		draw_text(25,room_height-225,"This is not the correct solution.");
+		draw_text(room_width - sprite_get_width(spr_clearGrid)-10 - sprite_get_width(spr_ClearErrors),room_height-sprite_get_height(spr_abandon_puzzle)-35 - sprite_get_height(spr_check_solution) - sprite_get_height(spr_clearGrid),"This is not the correct solution.");
 	}
 }
 /*

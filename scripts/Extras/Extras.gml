@@ -77,6 +77,9 @@ function SetRulePriorities(_p){
 	
 	for(var i = 0; i < ds_list_size(obj_Master.rules); i++){
 		var _ruleType = obj_Master.rules[| i].ruleType;
+		if(_ruleType == "multi"){
+		//	continue;	
+		}
 		var _oldPriority = ds_priority_find_priority(_p,_ruleType);
 		ds_priority_change_priority(_p,_ruleType,_oldPriority+1);	
 	}

@@ -68,26 +68,21 @@ var _sh = string_height(puzzleNum);
 var _sw = string_width(puzzleNum);
 //	draw_rectangle(room_width/2-_sw/2,575,room_width/2+_sw/2,575+_sh,1);
 
-if(!inProgress && point_in_rectangle(mouse_x,mouse_y,room_width/2-_sw/2,575,room_width/2+_sw/2,575+_sh) && mouse_check_button_pressed(mb_left)){
+if(!inProgress && point_in_rectangle(mouse_x,mouse_y,room_width/2-_sw/2,725,room_width/2+_sw/2,725+_sh) && mouse_check_button_pressed(mb_left)){
 	keyboard_string = "";
 	typing = true;
 	//GenerateRules();
 	
 }
 
-if(!playerReady && puzzleGrid == -4 && start_button == -4 && !inProgress){
-	start_button = instance_create_layer(room_width/2,450,"Instances",obj_start);
+if(!playerReady && puzzleGrid == -4 && start_easy_button == -4 && !inProgress){
+	CreateStartButtons();
 }
 
 if(playerReady && check_button == -4 && abandon_button == -4 && clear_button == -4){
-	check_button = instance_create_layer(25,room_height-200,"Instances",obj_checksolution);
-	abandon_button = instance_create_layer(25,room_height-100,"Instances",obj_abandon);
-	clear_button = instance_create_layer(25,room_height-300,"Instances",obj_clear_button);
+	CreateGameButtons();
 }
 
-if(playerReady && notSolved = true && show_solution_button == -4){
-	show_solution_button = instance_create_layer(25 + 270 + 25, room_height-200,"Instances",obj_show_solution);	
-}
 
 
 /*
@@ -111,9 +106,7 @@ if(keyboard_check_released(ord("S"))){
 }
 */
 
-if(keyboard_check_released(ord("E"))){
-	Clear_Errors();
-}
+/*
 if(keyboard_check_released(ord("T"))){
 //	instance_create_layer(0,0,"instances",obj_test_runner);
 	
@@ -153,7 +146,7 @@ if(keyboard_check_released(ord("T"))){
 		
 }
 
-
+*/
 
 /*
 if(keyboard_check_released(ord("B"))){

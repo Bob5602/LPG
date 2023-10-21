@@ -12,23 +12,28 @@ KeywordsToGroups = ds_map_create();
 solution = -4;
 truthGrid = -4;
 
+
 gridStartX = 100;
 gridStartY = 100;
 subGroupSize = 32 * 5;
-
+difficulty = "Easy";
 statustext = "";
 
 
 puzzleGrid = -4;
 playerReady = false;
 puzzleNum = GenerateSeed();
+prevPuz = "";
 typing = false;
 draw_set_font(font_title);
 
-start_button = -4;
+start_easy_button = -4;
+start_medium_button = -4;
+start_hard_button = -4;
 abandon_button = -4;
 check_button = -4;
 clear_button = -4;
+clear_errors_button = -4;
 show_solution_button = -4;
 
 
@@ -145,35 +150,20 @@ function CleanUp(_solved = false){
 	notSolved = false;
 	puzzleNum = GenerateSeed();
 	
+	DestroyGameButtons()
 	
-	if(abandon_button != -4){
-		instance_destroy(abandon_button);
-		abandon_button = -4;
-	}
-	if(check_button != -4){
-		instance_destroy(check_button);
-		check_button = -4;
-	}
-	if(clear_button != -4){
-		instance_destroy(clear_button);
-		clear_button = -4;
-	}
-	if(show_solution_button != -4){
-		instance_destroy(show_solution_button);
-		show_solution_button = -4;
-	}
 	
 	if(_solved){
 		var _timeTaken = current_time - _timing;
 		if(!solution_showed){
-			statustext = "Last puzzle solved in : " + ms_convert(_timeTaken);
+			statustext = difficulty + " puzzle " + prevPuz + " solved in : " + ms_convert(_timeTaken);
 		}else{
-			statustext = "Last puzzle had a shown solution, doesn't count!";	
+			statustext = difficulty + " puzzle " + prevPuz + " had a shown solution, doesn't count!";	
 		}
 		_timing = 0;
 		
 	}else{
-		statustext = "Last puzzle abandoned :(";	
+		statustext = difficulty + " puzzle " + prevPuz + " abandoned :(";	
 		_timing = 0;
 	}
 	solution_showed = false;
@@ -192,4 +182,52 @@ function ms_convert(_ms){
 	_m_string = string_replace(_m_string," ","0");
 	_s_string = string_replace(_s_string," ","0");
 	return _m_string + ":" + _s_string;
+}
+
+function CreateStartButtons(){
+	start_easy_button = instance_create_layer(room_width/2,450,"Instances",obj_start_easy);
+	start_medium_button = instance_create_layer(room_width/2,450+65,"Instances",obj_start_medium);
+	start_hard_button = instance_create_layer(room_width/2,450+65+65,"Instances",obj_start_hard);
+}
+
+function DestroyStartButtons(){
+	instance_destroy(start_easy_button);
+	start_easy_button = -4
+	instance_destroy(start_medium_button);
+	start_medium_button = -4;
+	instance_destroy(start_hard_button);
+	start_hard_button = -4;
+}
+
+function CreateGameButtons(){
+	check_button = instance_create_layer(room_width - sprite_get_width(spr_check_solution)-5,room_height-sprite_get_height(spr_abandon_puzzle)-10 - sprite_get_height(spr_check_solution),"Instances",obj_checksolution);
+	abandon_button = instance_create_layer(room_width - sprite_get_width(spr_abandon_puzzle)-5,room_height-sprite_get_height(spr_abandon_puzzle)-5,"Instances",obj_abandon);
+	//clear_button = instance_create_layer(25,room_height-300,"Instances",obj_clear_button);
+	clear_button = instance_create_layer(room_width - sprite_get_width(spr_clearGrid)-5,room_height-sprite_get_height(spr_abandon_puzzle)-15 - sprite_get_height(spr_check_solution) - sprite_get_height(spr_clearGrid),"Instances",obj_clear_button);
+	clear_errors_button = instance_create_layer(room_width - sprite_get_width(spr_clearGrid)-10 - sprite_get_width(spr_ClearErrors),room_height-sprite_get_height(spr_abandon_puzzle)-15 - sprite_get_height(spr_check_solution) - sprite_get_height(spr_clearGrid),"Instances",obj_clear_errors_button);
+	//show_solution_button = instance_create_layer(25 + 270 + 25, room_height-200,"Instances",obj_show_solution);		
+	show_solution_button = instance_create_layer(room_width - sprite_get_width(spr_check_solution)-10 - sprite_get_width(spr_show_solution),room_height-sprite_get_height(spr_abandon_puzzle)-10 - sprite_get_height(spr_check_solution),"Instances",obj_show_solution);
+}
+
+function DestroyGameButtons(){
+	if(abandon_button != -4){
+		instance_destroy(abandon_button);
+		abandon_button = -4;
+	}
+	if(check_button != -4){
+		instance_destroy(check_button);
+		check_button = -4;
+	}
+	if(clear_button != -4){
+		instance_destroy(clear_button);
+		clear_button = -4;
+	}
+	if(show_solution_button != -4){
+		instance_destroy(show_solution_button);
+		show_solution_button = -4;
+	}
+	if(clear_errors_button != -4){
+		instance_destroy(clear_errors_button);
+		clear_errors_button = -4;
+	}
 }

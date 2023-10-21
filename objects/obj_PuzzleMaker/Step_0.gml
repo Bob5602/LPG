@@ -38,12 +38,19 @@ if(!groupsSetup){
 	var _numToPick = 1;
 	//If no name group, 1 more.
 	if(!_nameGroup){
-		_numToPick++;	
+		_numToPick++;
 	}
 	
 	//Here is the logic for if we have a medium puzzle or a hard puzzle
 	//We add 1 for medium (4 groups) or 2 for hard (5 groups)
 	
+	if(obj_Master.difficulty == "Medium"){
+		_numToPick += 1;	
+	}
+	
+	if(obj_Master.difficulty == "Hard"){
+		_numToPick += 2;
+	}
 	
 	//Iterate through this
 	for(var i = 0; i < _numToPick; i++){
@@ -782,6 +789,10 @@ if(!cluesGenerated){
 					if(_a == _b){
 						continue;	
 					}
+					//Skip out of here if these are positive
+					if(GetState(_a,_b) == 2){
+						continue;	
+					}
 			
 					//Get positive relationships for A & B
 					var _aPos = FindPositiveRelations(_a);
@@ -1072,7 +1083,6 @@ if(!rulesGenerated){
 	//show_debug_message("Clearing all rules took " + string(_TimeTaken) + "ms");
 	subStep++;
 	array_push(displayText,"Determining Initial Clues...");
-	show_debug_message("All generated clues are: " + string(ds_list_size(allClues)));
 	show_debug_message("All clean clues are: " + string(ds_list_size(allCluesClean)));
 	
 	//show_message("Solution is " + string(solution));
@@ -1130,7 +1140,7 @@ if(!rulesGenerated){
 			if(_testRule.ruleType == _desType && ds_list_find_index(_testRule.ruleKeywords,_desKeyword) != -1 && ds_list_find_index(_testRule.ruleKeywords,_desNotKeyword) == -1){
 				//AddRuleSafe(rules,_testRule);
 				ds_list_add(obj_Master.rules,_testRule);
-				//show_debug_message("Type of "+ _desType + " and desired keyword was " + _desKeyword + " and avoiding " + _desNotKeyword + " So we added " + _testRule.ToString());
+				show_debug_message("Type of "+ _desType + " and desired keyword was " + _desKeyword + " and avoiding " + _desNotKeyword + " So we added " + _testRule.ToString());
 				_added = true;
 				
 				//if(_testRule.ruleType == "true" || _testRule.ruleType == "false" || _testRule.ruleType == "multi" || _testRule.ruleType == "neither" || _testRule.ruleType == "either" || _testRule.ruleType == "pair"){
@@ -1218,7 +1228,7 @@ if(!rulesGenerated){
 			subStepInProgress = false;
 			//If its still not complete, go back to add another rule
 			if(!ValidateWholeBoardComplete()){
-				//show_debug_message("Did not solve it, going back to add another rule");
+				//show_debug_message("Did not solve it in second go, going back to add another rule");
 				subStep=1;
 				exit;
 				
@@ -1434,6 +1444,7 @@ if(!obj_Master.playerReady){
 	obj_Master.playerReady = true;
 	obj_Master.solution = solution;
 	obj_Master._timing = current_time;
+	obj_Master.prevPuz = obj_Master.puzzleNum;
 	//Clear the grid
 	ClearAll();
 	var _time = current_time - startTime;

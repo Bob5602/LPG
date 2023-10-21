@@ -1204,7 +1204,7 @@ function GeneratePuzzleSolution(){
 	}
 	obj_Master.truthGrid = _testGrid;
 	
-	
+	/*
 		show_debug_message("Consistency Check:")
 		var _str = "";
 	for(var o = 0; o < ds_list_size(obj_Master.keywords); o++){
@@ -1236,6 +1236,7 @@ function GeneratePuzzleSolution(){
 			show_debug_message("Failed " + string(_c) + " = " + string(_f));	
 		}
 	}
+	*/
 	
 	return _solutions;
 	

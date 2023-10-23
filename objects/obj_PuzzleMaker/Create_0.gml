@@ -1,7 +1,19 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-random_set_seed(obj_Master.puzzleNum);
+switch(obj_Master.difficulty){
+	case "Easy":
+		random_set_seed(real(obj_Master.puzzleNum) * 1);
+	break;
+	case "Medium":
+		random_set_seed(real(obj_Master.puzzleNum) * 2);
+	break;
+	case "Hard":
+		random_set_seed(real(obj_Master.puzzleNum) * 3);
+	break;
+}
+
+
 overallStep = 0;
 subStep = 0;
 

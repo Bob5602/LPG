@@ -59,6 +59,7 @@ ds_list_add(nameGroups, new Group("Names2", "Tabitha", "George", "Chelsea", "Ste
 ds_list_add(nameGroups, new Group("Names3", "Tristen", "Kobe", "Maleah", "Genesis", "Kameron",false));
 ds_list_add(nameGroups, new Group("Names4", "Brian", "Jazmine", "Zane", "Rebecca", "Prince",false));
 ds_list_add(nameGroups, new Group("Names5", "Barton", "Isaac", "Ross", "Malakai", "Elvis",false));
+ds_list_add(nameGroups, new Group("Names6", "Frank", "Jerry", "Carlos", "George", "Mickey",false));
 stuffGroups = ds_list_create();
 ds_list_add(stuffGroups, new Group("Stuff0","slipper","flip-flop","loafer","boot","pump",false,,"the "," wearer"));
 ds_list_add(stuffGroups, new Group("Stuff1","Toyota","Mercedes","BMW","Honda","Fiat",false,,"the "," driver"));
@@ -67,15 +68,18 @@ ds_list_add(stuffGroups, new Group("Stuff3","cat","dog","turtle","horse","pig",f
 ds_list_add(stuffGroups, new Group("Stuff4","officer","firefigher","hobo","nurse","foreman",false,,"the "));
 ds_list_add(stuffGroups, new Group("Stuff5","beer","wine","whiskey","water","soda",false,,"the "," drinker"));
 ds_list_add(stuffGroups, new Group("Stuff6","Fulham","Tottenham","Arsenal","Liverpool","Newcastle",false,,"the "," fan"));
+ds_list_add(stuffGroups, new Group("Stuff7","Paris","Berlin","Warsaw","Moscow","Lodnon",false,,"the person born in "));
+ds_list_add(stuffGroups, new Group("Stuff8","Dragon","Rat","Snake","Horse","Pig",false,,"the person born in the year of the "));
+ds_list_add(stuffGroups, new Group("Stuff9","Libra","Scorpio","Pisces","Gemini","Aries",false,,"the "));
 valueGroups = ds_list_create();
 ds_list_add(valueGroups, new Group("ValueA", "8:00", "9:00", "10:00", "11:00", "12:00",true,["hour","earlier","later","goes to bed"],"the person who goes to bed at "));
 ds_list_add(valueGroups, new Group("ValueB", "6:00", "7:00", "8:00", "9:00", "10:00",true,["hour","earlier","later","wakes up"],"the person who wakes up at "));
 ds_list_add(valueGroups, new Group("ValueC", "17", "18", "19", "20", "21",true,["year","younger","older","is"],"the ","-year-old"));
 ds_list_add(valueGroups, new Group("ValueD", "26", "27", "28", "29", "30",true,["year","younger","older","is"],"the ","-year-old"));
 ds_list_add(valueGroups, new Group("ValueE", "6", "7", "8", "9", "10",true,["finger","fewer","more","has"],"the "," fingered person"));
+ds_list_add(valueGroups, new Group("ValueF", "1981", "1982", "1983", "1984", "1985",true,["year","earlier","later","was born"],"the person born in "));
 
 //ds_list_add(subGroups,test,test2,test3);
-
 
 
 //ds_list_add(groups, month3,condition,month);

@@ -320,6 +320,7 @@ function SubGroup(_a,_b) constructor{
 				//show_message("Found a positive - " + _a + " , " + _b);
 				MarkTrue(_a,_b);
 			}
+			ds_list_destroy(_numBlank);
 		}
 		
 		//Check columns
@@ -339,6 +340,7 @@ function SubGroup(_a,_b) constructor{
 				//show_message("Found a positive - " + _a + " , " + _b);
 				MarkTrue(_a,_b);
 			}
+			ds_list_destroy(_numBlank);
 		}
 
 	}
@@ -643,7 +645,7 @@ function FindPositiveRelations(_name){
 			}
 		}		
 	}
-	
+	ds_list_destroy(_sg);
 	return _pos;
 }
 
@@ -676,7 +678,7 @@ function FindNegativeRelations(_name){
 			}
 		}		
 	}
-	
+	ds_list_destroy(_sg);
 	return _neg;
 }
 

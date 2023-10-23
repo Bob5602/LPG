@@ -273,3 +273,18 @@ function GetErrorCount(){
 	}
 	return _errorCount;
 }
+
+
+//#macro ds_list_create ds_list_create
+
+function ds_list_create(){
+	var _t = ds_list_create();
+	ds_list_add(obj_Master.specialList,_t);
+	return _t;
+}
+
+function ds_list_destroy(_list){
+	var _i = ds_list_find_index(obj_Master.specialList,_list);
+	ds_list_delete(obj_Master.specialList,_i);
+	ds_list_destroy(_list);
+}

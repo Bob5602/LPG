@@ -33,6 +33,7 @@
     {"id":{"name":"Script6","path":"scripts/Script6/Script6.yy",},"order":4,},
     {"id":{"name":"spr_show_solution","path":"sprites/spr_show_solution/spr_show_solution.yy",},"order":8,},
     {"id":{"name":"Testing","path":"scripts/Testing/Testing.yy",},"order":0,},
+    {"id":{"name":"spr_BG","path":"sprites/spr_BG/spr_BG.yy",},"order":12,},
     {"id":{"name":"cooltext444236230607083","path":"sprites/cooltext444236230607083/cooltext444236230607083.yy",},"order":15,},
     {"id":{"name":"obj_start_hard","path":"objects/obj_start_hard/obj_start_hard.yy",},"order":9,},
     {"id":{"name":"obj_clear_errors_button","path":"objects/obj_clear_errors_button/obj_clear_errors_button.yy",},"order":10,},
@@ -85,6 +86,6 @@
   ],
   "IncludedFiles": [],
   "MetaData": {
-    "IDEVersion": "2022.0.1.31",
+    "IDEVersion": "2022.0.2.51",
   },
 }
